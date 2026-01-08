@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Invoice</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="invoice-container">
+    <h1>🧾 Invoice</h1>
+
+    <div class="invoice-header">
+      <div>
+        <p><strong>Invoice No:</strong> <span id="invoice-id"></span></p>
+        <p><strong>Date:</strong> <span id="invoice-date"></span></p>
+      </div>
+      <div>
+        <p><strong>Store:</strong> ElectroShop</p>
+        <p><strong>Payment:</strong> Cash on Delivery</p>
+      </div>
+    </div>
+
+    <table class="invoice-table">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Qty</th>
+          <th>Price</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody id="invoice-items"></tbody>
+    </table>
+
+    <h2 class="invoice-total">Grand Total: ₹<span id="grand-total"></span></h2>
+
+    <div class="invoice-actions">
+      <button onclick="window.print()">🖨 Print / Save PDF</button>
+      <button onclick="window.location.href='index.html'">🏠 Back to Home</button>
+    </div>
+  </div>
+
+  <script src="js/invoice.js"></script>
+</body>
+</html>

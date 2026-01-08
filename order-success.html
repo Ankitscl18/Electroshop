@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Confirmed</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="navbar">
+    <h2 class="logo">ElectroShop</h2>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="cart.html">Cart</a>
+    </nav>
+</header>
+
+<section class="products">
+    <h2>🎉 Order Placed Successfully!</h2>
+    <p>Thank you for shopping with us.</p>
+
+    <h3>Order Summary</h3>
+              <button onclick="window.location.href='invoice.html'">
+  📄 View Invoice
+</button>
+    <div class="delivery-eta" id="delivery-eta"> 
+
+        <div class="order-tracking">
+
+
+            
+  <div class="step active">
+    <span>📦</span>
+    <p>Order Placed</p>
+    <small id="date-placed"></small>
+  </div>
+
+  <div class="line"></div>
+
+  <div class="step">
+    <span>🏷️</span>
+    <p>Packed</p>
+    <small id="date-packed"></small>
+  </div>
+
+  <div class="line"></div>
+
+  <div class="step">
+    <span>🚚</span>
+    <p>Shipped</p>
+    <small id="date-shipped"></small>
+  </div>
+
+  <div class="line"></div>
+
+  <div class="step">
+    <span>📍</span>
+    <p>Out for Delivery</p>
+    <small id="date-out"></small>
+  </div>
+
+  <div class="line"></div>
+
+  <div class="step">
+    <span>✅</span>
+    <p>Delivered</p>
+    <small id="date-delivered"></small>
+  </div>
+</div>
+
+
+
+<!-- Order Tracking Timeline -->
+<div class="order-tracking">
+
+   <!-- Order Tracking Timeline -->
+<div class="order-tracking">
+  <h3>📦 Order Tracking</h3>
+
+  <div class="timeline">
+    <div class="step active">
+      <span class="dot"></span>
+      <p>Order Placed</p>
+      <small id="date-placed"></small>
+    </div>
+
+    <div class="step">
+      <span class="dot"></span>
+      <p>Packed</p>
+      <small id="date-packed"></small>
+    </div>
+
+    <div class="step">
+      <span class="dot"></span>
+      <p>Shipped</p>
+      <small id="date-shipped"></small>
+    </div>
+
+    <div class="step">
+      <span class="dot"></span>
+      <p>Out for Delivery</p>
+      <small id="date-out"></small>
+    </div>
+
+    <div class="step">
+      <span class="dot"></span>
+      <p>Delivered</p>
+      <small id="date-delivered"></small>
+    </div>
+  </div>
+</div>
+    
+
+
+    </div>
+
+    <div id="order-details"></div>
+
+    <h3 id="order-total"></h3>
+
+    <p style="margin-top:20px;">
+        <strong>Order ID:</strong> <span id="order-id"></span>
+    </p>
+
+    <a href="index.html">
+        <button style="margin-top:20px;">Continue Shopping</button>
+    </a>
+</section>
+
+<script src="js/order-success.js"></script>
+</body>
+</html>

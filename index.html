@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Electronics Store</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header class="navbar">
+
+
+
+        <h2 class="logo">ElectroShop</h2>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">Products</a>
+            <a href="cart.html">
+            Cart <span id="cart-count" style="
+                             background:red;
+                             color:white;
+                             padding:2px 6px;
+                             border-radius:50%;
+                             font-size:12px;
+                            margin-left:4px;
+                            display:none;
+                           ">0</span>
+                           </a>
+
+             <a href="login.html" id="login-link">Login</a>
+    <a href="#" id="logout-link" style="display:none;">Logout</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+
+         <div class="hero-search">
+  <input
+    type="text"
+    id="searchInput"
+    placeholder="Search products..."
+    onkeyup="searchProducts()"
+  />
+</div>
+
+
+        <h1>Buy Best Electronics Online</h1>
+        <p>Mobiles, Laptops, Headphones & more</p>
+        <button>Shop Now</button>
+        <section class="products">
+    <h2>Featured Products</h2>
+
+    <div class="product-list"> 
+
+      <!-- Skeleton Loader -->
+<div class="skeleton-wrapper" id="skeleton">
+  <div class="skeleton-card"></div>
+  <div class="skeleton-card"></div>
+  <div class="skeleton-card"></div>
+  <div class="skeleton-card"></div>
+</div> 
+
+
+
+
+        <div class="product-card">
+            <img src="image/smphone.png">
+            <h3>Smartphone</h3>
+            <p>Price: ₹12,999</p>
+            <button onclick="addToCart('Smartphone', 12999, 'image/smphone.png')">
+                          Add to Cart
+                                </button>
+
+            <button onclick="buyNow('Smartphone', 12999)">Buy Now</button>
+
+        </div>
+
+        <div class="product-card">
+            <img src="image/laptop.png">
+            <h3>Laptop</h3>
+            <p>Price: ₹55,000</p>
+           <button onclick="addToCart('laptop', 2499, 'image/laptop.png')">
+  Add to Cart
+</button>
+
+             <button onclick="addToCart('Gaming Headset', 2499, 'image/gaming.png')">
+  Buy Now
+</button>
+
+        </div>
+
+        <div class="product-card">
+            <img src="image/hrdd.png">
+            <h3>Headphones</h3>
+            <p>Price: ₹2,999</p>
+            
+            <button onclick="addToCart('Headphones', 2999, 'image/hrdd.png')">
+  Add to Cart
+</button>
+
+        <button onclick="addToCart('Headphones', 2999, 'image/hrdd.png')">
+  Buy Now
+</button>
+
+        </div>
+
+        <!-- Smart Watch -->
+<div class="product-card">
+    <img src="image/smartwatch.png">
+    <h3>Smart Watch</h3>
+    <p>Price: ₹4,999</p>
+    <button onclick="addToCart('smartwatch', 4999, 'image/smartwatch.png')">
+  Add to Cart
+</button>
+
+<button onclick="addToCart('smartwatch', 4999, 'image/smartwatch.png')">
+  Buy Now
+</button>
+
+</div>
+
+<!-- Headset -->
+<div class="product-card">
+    <img src="image/gaming.png">
+    <h3>Gaming Headset</h3>
+    <p>Price: ₹2,499</p>
+    
+    <button onclick="addToCart('Gaming Headset', 2499, 'image/gaming.png')">
+  Add to Cart
+</button>
+
+ <button onclick="addToCart('Gaming Headset', 2499, 'image/gaming.png')">
+  Buy Now
+</button>   
+
+</div>
+
+<!-- Earphones -->
+<div class="product-card">
+    <img src="image/shopping.png">
+    <h3>Wireless Earphones</h3>
+    <p>Price: ₹1,999</p>
+
+    <button onclick="addToCart('Earphones', 1999, 'image/shopping.png')">
+  Add to Cart
+</button>
+
+<button onclick="addToCart('Earphones', 1999, 'image/shopping.png')">
+  Buy Now
+</button>     
+
+</div>
+
+    </div>
+</section>
+
+    </section>
+
+     <script src="js/script.js"></script>
+   <!-- Toast Container -->
+<div id="toast-container"></div>
+
+
+</body>
+</html>
