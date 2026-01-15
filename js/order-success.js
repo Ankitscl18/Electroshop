@@ -15,10 +15,9 @@ if (!order) {
 
         const p = document.createElement("p");
         p.innerHTML = `
-    <img src="${item.image}" class="success-img">
-    ${item.name} × ${item.quantity} — ₹${itemTotal}
-`;
-
+            <img src="${item.image}" class="success-img">
+            ${item.name} × ${item.quantity} — ₹${itemTotal}
+        `;
 
         orderDetailsDiv.appendChild(p);
     });
@@ -27,62 +26,51 @@ if (!order) {
     orderIdSpan.innerText = order.id;
 }
 
+// ===== DELIVERY ETA =====
 function getDeliveryETA() {
-  const today = new Date();
+    const today = new Date();
+    const minDays = 3;
+    const maxDays = 5;
 
-  const minDays = 3;
-  const maxDays = 5;
+    const minDate = new Date(today);
+    minDate.setDate(today.getDate() + minDays);
 
-  const minDate = new Date(today);
-  minDate.setDate(today.getDate() + minDays);
+    const maxDate = new Date(today);
+    maxDate.setDate(today.getDate() + maxDays);
 
-  const maxDate = new Date(today);
-  maxDate.setDate(today.getDate() + maxDays);
+    const options = { day: 'numeric', month: 'short', year: 'numeric' };
 
-  const options = { day: 'numeric', month: 'short', year: 'numeric' };
-
-  return `📦 Estimated Delivery: ${minDate.toLocaleDateString('en-IN', options)} – ${maxDate.toLocaleDateString('en-IN', options)}`;
+    return `📦 Estimated Delivery: ${minDate.toLocaleDateString('en-IN', options)} – ${maxDate.toLocaleDateString('en-IN', options)}`;
 }
 
-// SHOW ETA
+// Show ETA (check if element exists first)
 const etaDiv = document.getElementById("delivery-eta");
 if (etaDiv) {
-  etaDiv.innerText = getDeliveryETA();
+    etaDiv.innerText = getDeliveryETA();
 }
 
-
-// FORCE FIX image size on Order Success page
+// ===== FORCE FIX IMAGE SIZE =====
 window.addEventListener("load", () => {
-  const imgs = document.querySelectorAll("img");
+    const imgs = document.querySelectorAll("img");
 
-  imgs.forEach(img => {
-    img.style.width = "120px";
-    img.style.height = "120px";
-    img.style.maxWidth = "120px";
-    img.style.maxHeight = "120px";
-    img.style.objectFit = "contain";
-    img.style.display = "block";
-    img.style.margin = "12px auto";
-  });
+    imgs.forEach(img => {
+        img.style.width = "120px";
+        img.style.height = "120px";
+        img.style.maxWidth = "120px";
+        img.style.maxHeight = "120px";
+        img.style.objectFit = "contain";
+        img.style.display = "block";
+        img.style.margin = "12px auto";
+    });
 });
 
-// Order Tracking Auto Progress
-const steps = document.querySelectorAll(".step");
-let currentStep = 0;
-
-setInterval(() => {
-  if (currentStep < steps.length) {
-    steps[currentStep].classList.add("active");
-    currentStep++;
-  }
-}, 1200);
-
-
-
 // ===== ORDER TRACKING WITH REAL DATES =====
-
 function formatDate(date) {
-  return date.toDateString();
+    return date.toLocaleDateString('en-IN', { 
+        day: 'numeric', 
+        month: 'short', 
+        year: 'numeric' 
+    });
 }
 
 // Base date = order placed date (today)
@@ -100,31 +88,27 @@ outDate.setDate(placedDate.getDate() + 3);
 const deliveredDate = new Date(placedDate);
 deliveredDate.setDate(placedDate.getDate() + 4);
 
-// Put dates into HTML
-document.getElementById("date-placed").innerText = formatDate(placedDate);
-document.getElementById("date-packed").innerText = formatDate(packedDate);
-document.getElementById("date-shipped").innerText = formatDate(shippedDate);
-document.getElementById("date-out").innerText = formatDate(outDate);
-document.getElementById("date-delivered").innerText = formatDate(deliveredDate);
+// ✅ SAFELY set dates - check if elements exist first
+function safeSetText(selector, text) {
+    const elements = document.querySelectorAll(selector);
+    if (elements.length > 0) {
+        elements.forEach(el => {
+            if (el) el.innerText = text;
+        });
+    }
+}
 
-// Activate steps based on today's date
-const step = document.querySelectorAll(".step");
-const today = new Date();
+// Set dates for ALL matching elements (safely)
+safeSetText("#date-placed", formatDate(placedDate));
+safeSetText("#date-packed", formatDate(packedDate));
+safeSetText("#date-shipped", formatDate(shippedDate));
+safeSetText("#date-out", formatDate(outDate));
+safeSetText("#date-delivered", formatDate(deliveredDate));
 
-const stepDates = [
-  placedDate,
-  packedDate,
-  shippedDate,
-  outDate,
-  deliveredDate
-];
+// ✅ Activate only first step initially
+const steps = document.querySelectorAll(".step");
+if (steps.length > 0 && steps[0]) {
+    steps[0].classList.add("active");
+}
 
-steps.forEach((step, index) => {
-  if (today >= stepDates[index]) {
-    step.classList.add("active");
-  }
-});
-
-
-
-
+console.log("✅ Order success page loaded successfully");

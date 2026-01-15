@@ -5,7 +5,6 @@ if (user && greeting) {
     greeting.innerText = "Hello, " + user.name + " 👋";
 }
 
-
 const orderItemsDiv = document.getElementById("order-items");
 const orderTotalDiv = document.getElementById("order-total");
 const form = document.getElementById("checkout-form");
@@ -22,10 +21,9 @@ if (cart.length === 0) {
         total += itemTotal;
 
         div.innerHTML = `
-    <img src="${item.image}" class="checkout-img">
-    <p>${item.name} × ${item.quantity} — ₹${itemTotal}</p>
-`;
-
+            <img src="${item.image}" class="checkout-img">
+            <p>${item.name} × ${item.quantity} — ₹${itemTotal}</p>
+        `;
 
         orderItemsDiv.appendChild(div);
     });
@@ -36,26 +34,44 @@ if (cart.length === 0) {
 form.addEventListener("submit", function (e) {
     e.preventDefault();
 
+    // Create order object FIRST
     const order = {
-  id: "ORD-" + Math.floor(Math.random() * 1000000),
-  items: cart.map(item => ({
-    name: item.name,
-    price: item.price,
-    quantity: item.quantity,
-    image: item.image,
-    total: item.price * item.quantity
-  })),
-  grandTotal: total,
-  date: new Date().toLocaleString()
-};
+        id: "ORD-" + Math.floor(Math.random() * 1000000),
+        items: cart.map(item => ({
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+            image: item.image,
+            total: item.price * item.quantity
+        })),
+        grandTotal: total,
+        date: new Date().toLocaleString()
+    };
 
-
-    // Save order for success page
+    // Save order BEFORE sending to backend
     localStorage.setItem("lastOrder", JSON.stringify(order));
-
-    // Clear cart
     localStorage.removeItem("cart");
 
-    // Redirect to order confirmation page
+    // Send to backend (but don't wait for it)
+    fetch("http://localhost:5000/api/order", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            items: cart,
+            total: total
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log("✅ Backend received order:", data);
+    })
+    .catch(err => {
+        console.error("❌ Backend error (but order still placed locally):", err);
+    });
+
+    // Redirect immediately (don't wait for backend)
     window.location.href = "order-success.html";
 });
+
