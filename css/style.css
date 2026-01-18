@@ -534,10 +534,10 @@ body::after {
 .invoice-container {
   max-width: 800px;
   margin: 40px auto;
-  padding: 30px;
+  padding: 40px;
   background: white;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
   border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
 .invoice-header {
@@ -591,8 +591,116 @@ body::after {
 }
 
 
+.invoice-container h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 30px;
+}
 
+.invoice-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #eee;
+}
 
+.invoice-header p {
+  margin: 5px 0;
+  color: #666;
+}
 
+.invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+}
 
+.invoice-table thead {
+  background: #667eea;
+  color: white;
+}
 
+.invoice-table th,
+.invoice-table td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.invoice-table th {
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+.invoice-table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+.invoice-total {
+  text-align: right;
+  color: #28a745;
+  font-size: 24px;
+  margin: 20px 0;
+}
+
+.invoice-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.invoice-actions button {
+  padding: 12px 25px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+.invoice-actions button:first-child {
+  background: #667eea;
+  color: white;
+}
+
+.invoice-actions button:first-child:hover {
+  background: #5568d3;
+}
+
+.invoice-actions button:last-child {
+  background: #28a745;
+  color: white;
+}
+
+.invoice-actions button:last-child:hover {
+  background: #218838;
+}
+
+/* Print Styles */
+@media print {
+  body {
+      margin: 0;
+      padding: 0;
+  }
+  
+  .invoice-container {
+      box-shadow: none;
+      margin: 0;
+      padding: 20px;
+  }
+  
+  .invoice-actions {
+      display: none; /* Hide buttons when printing */
+  }
+  
+  .invoice-table th {
+      background: #667eea !important;
+      color: white !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+  }
+}
