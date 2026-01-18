@@ -1,77 +1,103 @@
+// ================================
+// Greeting
+// ================================
 const greeting = document.getElementById("user-greeting");
 const user = JSON.parse(localStorage.getItem("user"));
 
 if (user && greeting) {
-    greeting.innerText = "Hello, " + user.name + " 👋";
+  greeting.innerText = "Hello, " + user.name + " 👋";
 }
 
+// ================================
+// Elements
+// ================================
 const orderItemsDiv = document.getElementById("order-items");
 const orderTotalDiv = document.getElementById("order-total");
 const form = document.getElementById("checkout-form");
 
+// ================================
+// Cart Data
+// ================================
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 let total = 0;
 
+// ================================
+// Render Cart
+// ================================
 if (cart.length === 0) {
-    orderItemsDiv.innerHTML = "<p>Your cart is empty.</p>";
+  orderItemsDiv.innerHTML = "<p>Your cart is empty.</p>";
 } else {
-    cart.forEach(item => {
-        const div = document.createElement("div");
-        const itemTotal = item.price * item.quantity;
-        total += itemTotal;
+  orderItemsDiv.innerHTML = "";
+  cart.forEach(item => {
+    const div = document.createElement("div");
+    const itemTotal = item.price * item.quantity;
+    total += itemTotal;
 
-        div.innerHTML = `
-            <img src="${item.image}" class="checkout-img">
-            <p>${item.name} × ${item.quantity} — ₹${itemTotal}</p>
-        `;
+    div.innerHTML = `
+      <img src="${item.image}" class="checkout-img">
+      <p>${item.name} × ${item.quantity} — ₹${itemTotal}</p>
+    `;
 
-        orderItemsDiv.appendChild(div);
-    });
+    orderItemsDiv.appendChild(div);
+  });
 
-    orderTotalDiv.innerText = "Total: ₹" + total;
+  orderTotalDiv.innerText = "Total: ₹" + total;
 }
 
+// ================================
+// Submit Order (LIVE BACKEND)
+// ================================
 form.addEventListener("submit", function (e) {
-    e.preventDefault();
+  e.preventDefault();
 
-    // Create order object FIRST
-    const order = {
-        id: "ORD-" + Math.floor(Math.random() * 1000000),
-        items: cart.map(item => ({
-            name: item.name,
-            price: item.price,
-            quantity: item.quantity,
-            image: item.image,
-            total: item.price * item.quantity
-        })),
-        grandTotal: total,
-        date: new Date().toLocaleString()
-    };
+  if (cart.length === 0) {
+    alert("Cart is empty");
+    return;
+  }
 
-    // Save order BEFORE sending to backend
-    localStorage.setItem("lastOrder", JSON.stringify(order));
-    localStorage.removeItem("cart");
+  const orderPayload = {
+    items: cart,
+    total: total,
+    date: new Date().toISOString()
+  };
 
-    // Send to backend (but don't wait for it)
-    fetch("http://localhost:5000/api/order", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            items: cart,
-            total: total
-        })
+  console.log("Sending order:", orderPayload);
+
+  fetch(`${API_BASE_URL}/api/order`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(orderPayload)
+  })
+    .then(res => {
+      if (!res.ok) {
+        throw new Error("Failed to place order");
+      }
+      return res.json();
     })
-    .then(res => res.json())
     .then(data => {
-        console.log("✅ Backend received order:", data);
+      console.log("✅ Order saved in database:", data);
+
+      // Save order for success page
+      localStorage.setItem(
+        "lastOrder",
+        JSON.stringify({
+          id: data._id || "ORD-" + Math.floor(Math.random() * 1000000),
+          items: cart,
+          grandTotal: total,
+          date: new Date().toLocaleString()
+        })
+      );
+
+      // Clear cart
+      localStorage.removeItem("cart");
+
+      // Redirect AFTER backend success
+      window.location.href = "order-success.html";
     })
     .catch(err => {
-        console.error("❌ Backend error (but order still placed locally):", err);
+      console.error("❌ Order failed:", err);
+      alert("Order failed. Please try again.");
     });
-
-    // Redirect immediately (don't wait for backend)
-    window.location.href = "order-success.html";
 });
-
