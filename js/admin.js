@@ -1,8 +1,10 @@
 let allOrders = [];
-let autoRefreshInterval;
+let autoRefreshInterval = null; // Initialize as null
 
 // Load orders when page loads
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('📱 Admin dashboard loaded');
+    
     loadOrders();
     
     // Search functionality
@@ -10,29 +12,44 @@ document.addEventListener('DOMContentLoaded', function() {
         filterOrders(e.target.value);
     });
     
-    // Auto-refresh every 10 seconds
+    // Auto-refresh every 30 seconds
     startAutoRefresh();
 });
 
 // Start auto-refresh
 function startAutoRefresh() {
+    // CRITICAL FIX: Clear any existing interval first to prevent duplicates
+    if (autoRefreshInterval) {
+        console.log('⚠️ Clearing old refresh interval');
+        clearInterval(autoRefreshInterval);
+    }
+    
+    console.log('✅ Starting auto-refresh (every 30 seconds)');
+    
     autoRefreshInterval = setInterval(() => {
         console.log('🔄 Auto-refreshing orders...');
         loadOrders();
-    }, 10000); // Refresh every 10 seconds
+    }, 30000); // 30 seconds (reduced from 10)
 }
 
 // Stop auto-refresh
 function stopAutoRefresh() {
     if (autoRefreshInterval) {
         clearInterval(autoRefreshInterval);
+        autoRefreshInterval = null;
+        console.log('⏹️ Auto-refresh stopped');
     }
 }
 
 // Load orders from API
 async function loadOrders() {
     try {
-        const response = await fetch('http://localhost:5000/api/orders');
+        // Use API_BASE_URL from config.js, or fallback to localhost
+        const apiUrl = typeof API_BASE_URL !== 'undefined' 
+            ? API_BASE_URL 
+            : 'http://localhost:5000';
+        
+        const response = await fetch(`${apiUrl}/api/orders`);
         const data = await response.json();
         
         if (data.status === 'success') {
@@ -262,7 +279,12 @@ async function deleteOrder(mongoId, orderId) {
     }
     
     try {
-        const response = await fetch(`http://localhost:5000/api/order/${orderId}`, {
+        // Use API_BASE_URL from config.js, or fallback to localhost
+        const apiUrl = typeof API_BASE_URL !== 'undefined' 
+            ? API_BASE_URL 
+            : 'http://localhost:5000';
+        
+        const response = await fetch(`${apiUrl}/api/order/${orderId}`, {
             method: 'DELETE'
         });
         
